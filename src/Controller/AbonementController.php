@@ -36,7 +36,7 @@ class AbonementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $SMSService->handleRequest($request);
             $SMSService->sendSMS($smsSender, $entityManager);
-            
+
             return new JsonResponse([
                 'message' => 'ok',
             ]);

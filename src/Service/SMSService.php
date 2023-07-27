@@ -3,36 +3,44 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\SmsSender;
 
 class SMSService
 {
     private SmsSender $smsSender;
-    private ?string $from = null;
-    private ?string $to = null;
-    private ?string $message = null;
+    public $sender;
+    public $reciever;
+    public $message;
     
     public function __construct(SmsSender $smsSender)
     {
         $this->smsSender = $smsSender;
     }
 
-    public function handleRequest(Request $request): void
+    public function handleRequest($httpData): void
     {
+        $sender = $httpData->request->all()["sms"]["sender"];
+        $reciever = $httpData->request->all()["sms"]["reciever"];
+        $message = $httpData->request->all()["sms"]["message"];
+
         try {
-            
-            if ($request->get('sender') !== null) {
-                $this->from = $request->request->get('sender');
-            } throw new \Exception('Значение Отправителя должно быть указано');
+            if ($sender !== null) {
+                $this->sender = $sender;
+            } else {
+                throw new \Exception('Значение Отправителя должно быть указано');  
+            } 
 
-            if ($request->get('reciever') !== null) {
-                $this->to = $request->request->get('reciever');
-            } throw new \Exception('Значение Получателя должно быть указано');
+            if ($reciever !== null) {
+                $this->reciever = $reciever;
+            } else {
+                throw new \Exception('Значение Получателя должно быть указано');
+            }
 
-            if ($request->get('message') !== null) {
-                $this->message = $request->request->get('message');                
-            } throw new \Exception('Сообщение не должно быть пустым');
+            if ($message !== null) {
+                $this->message = $message;
+            } else {
+                throw new \Exception('Сообщение не должно быть пустым');   
+            }
             
         } catch (\Exception $e) {
             echo "Ошибка: ". $e->getMessage();
@@ -44,9 +52,10 @@ class SMSService
      */
     public function sendSMS(SmsSender $smsSender, EntityManagerInterface $entityManager): void
     {
-        $smsSender->setReciever($this->to);
+        $smsSender->setSender($this->sender);
+        $smsSender->setReciever($this->reciever);
         $smsSender->setMessage($this->message);
-        $entityManager->persist($this->smsSender);
+        $entityManager->persist($smsSender);
         $entityManager->flush();
     }
 }
