@@ -5,10 +5,10 @@ namespace App\Facade;
 use App\Entity\Caller;
 use App\Entity\SmsSender;
 
-class FacadeAbonement
+class CheapSmsAndCalls
 {
-    private $caller;
-    private $smsSender;
+    private Caller $caller;
+    private SmsSender $smsSender;
     
     public function __construct() {
         $this->caller = new Caller;
