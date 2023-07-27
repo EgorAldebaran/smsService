@@ -11,15 +11,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\SmsSender;
 use App\Form\SMSType;
 use App\Service\SMSService;
+use App\Service\CallService;
 
 class AbonementController extends AbstractController
 {
     private $smsSender;
     private $SMSService;
-    public function __construct(SmsSender $smsSender, SMSService $SMSService)
+    private $callService;
+    
+    public function __construct(SmsSender $smsSender, SMSService $SMSService, CallService $callService)
     {
         $this->smsSender = $smsSender;
         $this->SMSService = $SMSService;
+        $this->callService = $callService;
     }
     
     #[Route('/sms', name: 'sms')]
@@ -48,11 +52,9 @@ class AbonementController extends AbstractController
     }
 
     #[Route('info')]
-    public function info(EntityManagerInterface $entityManager): JsonResponse
+    public function info(EntityManagerInterface $entityManager, CallService $callService): JsonResponse
     {
-        $smsSender = new SmsSender;
-        $sms = new SMSService($smsSender);
-        $sms->sendSMS('from', 'to', 'text', $smsSender, $entityManager);
+        dd($callService);
 
         return new JsonResponse([
             'message' => 'ok'

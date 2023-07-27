@@ -4,13 +4,14 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\SmsSender;
+use App\Service\AbonentServiceInterface;
 
-class SMSService
+class SMSService implements AbonentServiceInterface
 {
     private SmsSender $smsSender;
-    public $sender;
-    public $reciever;
-    public $message;
+    private $sender;
+    private $reciever;
+    private $message;
     
     public function __construct(SmsSender $smsSender)
     {
