@@ -62,4 +62,13 @@ class SmsSender
 
         return $this;
     }
+
+    /*
+     * отправка SMS
+     */
+    public function sendSMS($text, $from, $to): ?string
+    {
+        $result = sprintf ("SMS: %s от %s к %s отправлено.", $text, $from, $to);
+        return $result;
+    }
 }

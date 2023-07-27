@@ -66,8 +66,9 @@ class Caller
     /*
      * осуществление звонков
      */
-    public function startCall($from, $to): void
+    public function startCall($from, $to): ?string
     {
-        
+        $result = sprintf("от %s к %s звонок осуществлен", $from, $to);
+        return $result;
     }
 }
