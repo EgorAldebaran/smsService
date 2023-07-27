@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SmsSenderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SmsSenderRepository::class)]
 class SmsSender
@@ -14,12 +15,15 @@ class SmsSender
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull]
     private ?string $sender = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull]
     private ?string $reciever = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull]
     private ?string $message = null;
 
     public function getId(): ?int
