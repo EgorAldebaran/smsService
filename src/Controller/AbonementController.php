@@ -14,6 +14,7 @@ use App\Form\SMSType;
 use App\Form\CallerType;
 use App\Service\SMSService;
 use App\Service\CallService;
+use App\Facade\CheapSmsAndCalls;
 
 class AbonementController extends AbstractController
 {
@@ -21,13 +22,21 @@ class AbonementController extends AbstractController
     private $caller;
     private $SMSService;
     private $callService;
+    private $cheapSmsAndCalls;
     
-    public function __construct(SmsSender $smsSender, SMSService $SMSService, CallService $callService, Caller $caller)
+    public function __construct(
+        SmsSender $smsSender,
+        SMSService $SMSService,
+        CallService $callService,
+        Caller $caller,
+        CheapSmsAndCalls $cheapSmsAndCalls
+    )
     {
         $this->smsSender = $smsSender;
         $this->SMSService = $SMSService;
         $this->callService = $callService;
         $this->caller = $caller;
+        $this->cheapSmsAndCalls = $cheapSmsAndCalls;
     }
     
     #[Route('/sms', name: 'sms')]
@@ -56,7 +65,7 @@ class AbonementController extends AbstractController
     }
 
     #[Route('call', name: 'call')]
-    public function call(
+    public function caller(
         EntityManagerInterface $entityManager,
         Caller $caller,
         CallService $callService, 
@@ -81,4 +90,39 @@ class AbonementController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /*
+     * общий принцип - если нужно будет запросить Апи 
+     * то можно использовать фасад для всех сервисов, которые могут звонить
+     */
+    public function allCall(
+        Request $request,
+        CheapSmsAndCalls $cheapSmsAndCalls,
+        Caller $caller,
+        CallService $callService,
+        EntityManagerInterface $entityManager,
+    ): JsonResponse
+    {
+        $cheapSmsAndCalls->getCall($caller, $callService, $entityManager, $request);
+        
+        return new JsonResponse([
+            'message' => 'successfully',
+        ]);
+    }
+
+    /*
+     * Общий принцип - если использовать Апи
+     * то можно за фасадом спрятать реализацию для всех сервисов СМС
+     */
+    public function allSms(Request $request,
+                           CheapSmsAndCalls $cheapSmsAndCalls,
+                           SmsSender $smsSender,
+                           SMService $SMSService,
+                           EntityManagerInterface $entityManager
+    ): JsonResponse
+    {
+        
+    }
+
+    
 }
