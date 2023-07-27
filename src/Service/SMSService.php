@@ -6,11 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\SmsSender;
 use App\Service\AbonentServiceInterface;
 
-class SMSService implements AbonentServiceInterface
-{
+class SMSService extends AbonentService implements AbonentServiceInterface
+{ 
     private SmsSender $smsSender;
-    private $sender;
-    private $reciever;
     private $message;
     
     public function __construct(SmsSender $smsSender)
@@ -18,11 +16,7 @@ class SMSService implements AbonentServiceInterface
         $this->smsSender = $smsSender;
     }
 
-    public function handleRequest($httpData, $choiceForm)
-    {
-        
-    }
-
+    
     /*
      * Сервис отправки сообщений
      */

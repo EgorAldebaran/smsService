@@ -11,6 +11,6 @@ interface AbonentServiceInterface
     /*
      * метод обрабатывает http запрос
      */
-    public function handleRequest(?Request $request);
+    public function handleRequest($httpData, $choiceForm);
     
 }
