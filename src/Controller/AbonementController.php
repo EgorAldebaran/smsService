@@ -121,8 +121,10 @@ class AbonementController extends AbstractController
                            EntityManagerInterface $entityManager
     ): JsonResponse
     {
+        $cheapSmsAndCalls->getSms($request, $smsSender, $SMSService, $entityManager);
         
-    }
-
-    
+        return new JsonResponse([
+            'message' => 'successfully'
+        ]);
+    }    
 }
