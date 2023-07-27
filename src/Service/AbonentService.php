@@ -10,17 +10,16 @@ abstract class AbonentService implements AbonentServiceInterface
 {
     private AbonentServiceInterface $abonentService;
     
-    private $sender;
-    private $reciever;
+    public $sender;
+    public $reciever;
     
     public function __construct(AbonentServiceInterface $abonentService)
     {
         $this->abonentService = $abonentService;
     }
 
-    public function handleRequest(?Request $httpData)
+    public function handleRequest($httpData, $choiceForm)
     {
-        $choiceForm = "caller";
         $sender = $httpData->request->all()[$choiceForm]["sender"];
         $reciever = $httpData->request->all()[$choiceForm]["reciever"];
      

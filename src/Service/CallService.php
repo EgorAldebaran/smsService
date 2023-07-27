@@ -20,6 +20,7 @@ class CallService extends AbonentService implements AbonentServiceInterface
      */
     public function startCall(Caller $caller, EntityManagerInterface $entityManager): void
     {
+        dd($this->sender);
         $caller->setSender($this->sender);
         $caller->setReciever($this->reciever);
         $entityManager->persist($caller);

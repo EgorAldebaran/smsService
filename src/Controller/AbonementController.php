@@ -56,19 +56,24 @@ class AbonementController extends AbstractController
     }
 
     #[Route('call', name: 'call')]
-    public function info(
-        EntityManagerInterface $entityManager, 
+    public function call(
+        EntityManagerInterface $entityManager,
+        Caller $caller,
         CallService $callService, 
         Request $request
     ): Response
     {
-        //dd($callService);
         $form = $this->createForm(CallerType::class, $this->caller);
         $form->handleRequest($request);
+        $choiceForm = "caller";
         
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($callService->handleRequest($request, "caller"));
-            dd($callService);
+            $callService->handleRequest($request, $choiceForm);
+            $callService->startCall($caller, $entityManager);
+
+            return new JsonResponse([
+                'message' => 'ok'
+            ]);
         }
         
 
