@@ -14,6 +14,7 @@ use App\Form\SMSType;
 use App\Form\CallerType;
 use App\Service\SMSService;
 use App\Service\CallService;
+use App\Facade\FacadeAbonement;
 
 class AbonementController extends AbstractController
 {
@@ -21,8 +22,15 @@ class AbonementController extends AbstractController
     private $caller;
     private $SMSService;
     private $callService;
+    private $facadeAbonement;
     
-    public function __construct(SmsSender $smsSender, SMSService $SMSService, CallService $callService, Caller $caller)
+    public function __construct(
+        SmsSender $smsSender,
+        SMSService $SMSService,
+        CallService $callService,
+        Caller $caller,
+        FacadeAbonement $facadeAbonement
+    )
     {
         $this->smsSender = $smsSender;
         $this->SMSService = $SMSService;
@@ -79,6 +87,16 @@ class AbonementController extends AbstractController
 
         return $this->render('abonement/caller.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/facade', name: 'facade')]
+    public function facade(Request $request, FacadeAbonement $facadeAbonement): JsonResponse
+    {
+        dd($facadeAbonement);
+        
+        return new JsonResponse([
+            'message' => 'successfully',
         ]);
     }
 }
