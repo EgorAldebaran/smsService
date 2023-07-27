@@ -9,21 +9,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\SmsSender;
+use App\Entity\Caller;
 use App\Form\SMSType;
+use App\Form\CallerType;
 use App\Service\SMSService;
 use App\Service\CallService;
 
 class AbonementController extends AbstractController
 {
     private $smsSender;
+    private $caller;
     private $SMSService;
     private $callService;
     
-    public function __construct(SmsSender $smsSender, SMSService $SMSService, CallService $callService)
+    public function __construct(SmsSender $smsSender, SMSService $SMSService, CallService $callService, Caller $caller)
     {
         $this->smsSender = $smsSender;
         $this->SMSService = $SMSService;
         $this->callService = $callService;
+        $this->caller = $caller;
     }
     
     #[Route('/sms', name: 'sms')]
@@ -51,13 +55,25 @@ class AbonementController extends AbstractController
         ]);
     }
 
-    #[Route('info')]
-    public function info(EntityManagerInterface $entityManager, CallService $callService): JsonResponse
+    #[Route('call', name: 'call')]
+    public function info(
+        EntityManagerInterface $entityManager, 
+        CallService $callService, 
+        Request $request
+    ): Response
     {
-        dd($callService);
+        //dd($callService);
+        $form = $this->createForm(CallerType::class, $this->caller);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($callService->handleRequest($request, "caller"));
+            dd($callService);
+        }
+        
 
-        return new JsonResponse([
-            'message' => 'ok'
+        return $this->render('abonement/caller.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

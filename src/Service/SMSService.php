@@ -18,34 +18,9 @@ class SMSService implements AbonentServiceInterface
         $this->smsSender = $smsSender;
     }
 
-    public function handleRequest($httpData): void
+    public function handleRequest($httpData, $choiceForm)
     {
-        $sender = $httpData->request->all()["sms"]["sender"];
-        $reciever = $httpData->request->all()["sms"]["reciever"];
-        $message = $httpData->request->all()["sms"]["message"];
-
-        try {
-            if ($sender !== null) {
-                $this->sender = $sender;
-            } else {
-                throw new \Exception('Значение Отправителя должно быть указано');  
-            } 
-
-            if ($reciever !== null) {
-                $this->reciever = $reciever;
-            } else {
-                throw new \Exception('Значение Получателя должно быть указано');
-            }
-
-            if ($message !== null) {
-                $this->message = $message;
-            } else {
-                throw new \Exception('Сообщение не должно быть пустым');   
-            }
-            
-        } catch (\Exception $e) {
-            echo "Ошибка: ". $e->getMessage();
-        }
+        
     }
 
     /*

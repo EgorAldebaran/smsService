@@ -18,10 +18,11 @@ abstract class AbonentService implements AbonentServiceInterface
         $this->abonentService = $abonentService;
     }
 
-    public function handleRequest(?Request $httpData): void
+    public function handleRequest(?Request $httpData)
     {
-        $sender = $httpData->request->all()["sms"]["sender"];
-        $reciever = $httpData->request->all()["sms"]["reciever"];
+        $choiceForm = "caller";
+        $sender = $httpData->request->all()[$choiceForm]["sender"];
+        $reciever = $httpData->request->all()[$choiceForm]["reciever"];
      
         try {
             if ($sender !== null) {
