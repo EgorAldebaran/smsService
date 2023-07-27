@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\SmsSenderRepository;
+use App\Repository\CallerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: SmsSenderRepository::class)]
-class SmsSender
+#[ORM\Entity(repositoryClass: CallerRepository::class)]
+class Caller
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,16 +14,10 @@ class SmsSender
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotNull]
     private ?string $sender = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotNull]
     private ?string $reciever = null;
-
-    #[ORM\Column(length: 255)]
-    #[Assert\NotNull]
-    private ?string $message = null;
 
     public function getId(): ?int
     {
@@ -51,18 +44,6 @@ class SmsSender
     public function setReciever(string $reciever): static
     {
         $this->reciever = $reciever;
-
-        return $this;
-    }
-
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    public function setMessage(string $message): static
-    {
-        $this->message = $message;
 
         return $this;
     }
