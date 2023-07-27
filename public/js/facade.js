@@ -1,64 +1,30 @@
-class VideoPlayer
+ class Prototype
 {
-    play() {
-        console.log ('play from VideoPlayer')
-    }
-
-    pause() {
-        console.log ('pause from videoplayer')
-    }
-
-    stop() {
-        console.log ('stop from videoplayer')
+    fire() {
+	console.log ('---fire---')
     }
 }
 
-class AudioPlayer
+class Object
 {
-    play() {
-        console.log ('play from AudioPlayer')
+    sfira() {
+	console.log ('---just object---')
+    }
+}
+
+class Unit
+{
+    constructor() {
+	this.object = new Object;
+	this.prototype = new Prototype; 
     }
 
-    pause() {
-        console.log ('pause from audioplayer')
-    }
-
-    stop() {
-        console.log ('stop from audioplayer')
+    start() {
+	this.object.sfira()
+	this.prototype.fire()
     }
 }
 
 
-class MediaPlayerFacade
-{
-    contructor() {
-        this.videoPlayer = new VideoPlayer;
-        this.audioPlayer = new AudioPlayer;
-    }
-
-    playVideo() {
-        this.VideoPlayer.play()
-    }
-
-    pauseVideo() {
-	this.videoPlayer.pause()
-    }
-
-    stopVideo() {
-	this.videoPlayer.stop()
-    }
-
-    playAudio() {
-	this.audioplayer.play()
-    }
-
-        pauseAudio() {
-        this.audioPlayer.pause();
-    }
-
-    stopAudio() {
-        this.audioPlayer.stop();
-    }
-}
-
-console.log ('---facade ----')
+const unit = new Unit;
+unit.start()
