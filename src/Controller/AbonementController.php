@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Caller;
 use App\Entity\SmsSender;
+use App\Facade\FacadeAbonement;
 
 class AbonementController extends AbstractController
 {
@@ -16,14 +17,15 @@ class AbonementController extends AbstractController
     {
         $caller = new Caller;
         $smser = new SmsSender;
+        $abonement = new FacadeAbonement;
 
         $jacke = 'Jacke';
         $queen = 'Queen';
         $textSMS = "In the evening there was a thunderstorm";
 
-        echo $caller->startCall($jacke, $queen);
-        echo '<br>';
-        echo $smser->sendSMS($textSMS, $jacke, $queen);
+        $abonement->call($jacke, $queen);
+        $abonement->sendSms($textSMS, $jacke, $queen);
+
         
         return $this->render('abonement/index.html.twig', [
             'controller_name' => 'AbonementController',
